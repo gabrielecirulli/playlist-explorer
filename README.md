@@ -1,2 +1,2 @@
 # Playlist explorer
-An experiment in creating a client-side tool that lets you find videos related to your playlists
+An experiment in creating a tool that lets you find videos related to your playlists
