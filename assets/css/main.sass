@@ -10,35 +10,37 @@ $button-border: 1px solid #6183ad
 
 $textfield-background: white
 
-input
-	&[type=text]
-		padding: $input-padding
-		border: $input-border
-		box-shadow: inset 0px 1px 2px rgba(#000, 0.1)
-		height: $input-height
-	&[type=submit]
-		color: $button-color
-		text-shadow: 0px 1px 0px rgba(#fff, .8)
-		background: $button-background
-		font-weight: bold
-		height: $input-height
-		padding: $input-padding
-		border: $button-border
-		border-radius: 4px
-		box-shadow: inset 0px 1px 0px rgba(#fff, .8)
-		cursor: pointer
-		&:hover
-			background: lighten($button-background, 5%)
-		&:active
-			box-shadow: inset 0px 1px 0px rgba(#fff, .4)
-			background: darken($button-background, 2%)
-
 #main-container
+	line-height: 20px
+	input
+		line-height: normal
+		&[type=text]
+			padding: $input-padding
+			border: $input-border
+			box-shadow: inset 0px 1px 2px rgba(#000, 0.1)
+			height: $input-height
+		&[type=submit]
+			color: $button-color
+			text-shadow: 0px 1px 0px rgba(#fff, .8)
+			background: $button-background
+			font-weight: bold
+			height: $input-height
+			padding: $input-padding
+			border: $button-border
+			border-radius: 4px
+			box-shadow: inset 0px 1px 0px rgba(#fff, .8)
+			cursor: pointer
+			&:hover
+				background: lighten($button-background, 5%)
+			&:active
+				box-shadow: inset 0px 1px 0px rgba(#fff, .4)
+				background: darken($button-background, 2%)
 	.side-videos
 		box-sizing: border-box
 		position: absolute
 		height: 100%
-		width: 350px
+		width: 25%
+		min-width: 250px
 		left: 20px
 		background: #f5f5f5
 		padding: 20px
@@ -48,6 +50,14 @@ input
 			style: solid
 			right-width: 1px
 			left-width: 1px
+		.errors
+			padding: 0
+			list-style:
+				type: none
+				position: inside
+			li
+				font-weight: bold
+				color: #c34040
 		input
 			display: block
 			float: left
@@ -56,4 +66,5 @@ input
 			&#playlist-submit
 				float: right
 				width: 20%
+
 	
