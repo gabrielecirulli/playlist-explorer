@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'sinatra/assetpack'
 
+set :sass, { :load_paths => [ "assets/css/" ] }
+
 assets do
   serve '/js',  from: 'assets/js'
   serve '/css', from: 'assets/css'
