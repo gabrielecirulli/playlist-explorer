@@ -8,7 +8,11 @@ assets do
   serve '/css', from: 'assets/css'
 
   css :main, [ '/css/*.css' ]
-  js :app,   [ '/js/*.js' ]
+  js :app,   [
+    '/js/vendor/*.js',
+    '/js/app/*.js'
+  ]
+
 end
 
 get '/' do
