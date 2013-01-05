@@ -1,7 +1,5 @@
 $(document).ready ->
-
-
-	$(document).ajaxError -> showError()		
+	$(@).ajaxError -> showError()		
 
 	showError = (errorText="Sorry, an unknown error occurred.") ->
 		errorMessage = $('<li>').hide().text(errorText)
@@ -15,13 +13,16 @@ $(document).ready ->
 
 		return $('#playlist-id').focus() unless playlistId
 
+		$('#playlist-loading-cue').slideDown 'fast'
+
 		$.getJSON "/playlist/#{playlistId}", (json) ->
-			console.log json
+			$('#playlist-loading-cue').slideUp 'fast'
 			if json.status is 'ok'
-				console.log 'okay!'
+				console.log json
 			else if json.status is 'error'					
 				if json.errorMessage then showError json.errorMessage else showError()
 
 	if window.location.hash
 		$('#playlist-id').val window.location.hash.replace '#', '' 
+		window.location.hash = ''
 		$('#playlist-selector').submit()

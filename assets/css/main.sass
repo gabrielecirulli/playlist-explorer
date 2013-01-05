@@ -35,6 +35,10 @@ $textfield-background: white
 			&:active
 				box-shadow: inset 0px 1px 0px rgba(#fff, .4)
 				background: darken($button-background, 2%)
+	.cue
+		display: none
+		font-weight: bold
+		padding: 1em 0
 	.side-videos
 		box-sizing: border-box
 		position: absolute
@@ -58,13 +62,13 @@ $textfield-background: white
 			li
 				font-weight: bold
 				color: #c34040
-		input
-			display: block
-			float: left
-			&#playlist-id
-				width: 75%
-			&#playlist-submit
-				float: right
-				width: 20%
-
-	
+		form
+			@include clear-fix
+			input
+				display: block
+				float: left
+				&#playlist-id
+					width: 75%
+				&#playlist-submit
+					float: right
+					width: 20%
