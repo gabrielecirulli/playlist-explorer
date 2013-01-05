@@ -12,11 +12,3 @@ end
 get '/' do
   erb :index
 end
-
-get '/fuck' do
-  'shit'
-end
-
-get '/hello' do
-  'asdf'
-end

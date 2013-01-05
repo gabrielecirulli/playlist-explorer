@@ -1,4 +1,4 @@
-*.sublime-project
-*.sublime-workspace
 .sass-cache/
 Gemfile.lock
+*.sublime-project
+*.sublime-workspace
