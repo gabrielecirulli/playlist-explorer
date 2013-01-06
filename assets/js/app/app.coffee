@@ -1,11 +1,16 @@
 $(document).ready ->
-	$(@).ajaxError -> showError()		
+	$(@).ajaxError -> 
+		$('#playlist-loading-cue').slideUp 'fast'
+		showError()		
 
 	showError = (errorText="Sorry, an unknown error occurred.") ->
+		hideErrors()
 		errorMessage = $('<li>').hide().text(errorText)
-		$('#playlist-input-errors').empty()
-			.append errorMessage
+		$('#playlist-input-errors').append errorMessage
 		errorMessage.slideDown 'fast'
+
+	hideErrors = () ->
+		$('#playlist-input-errors').empty()
 
 	$('#playlist-selector').submit (e) ->
 		e.preventDefault()
