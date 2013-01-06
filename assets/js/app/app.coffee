@@ -31,17 +31,14 @@ class App
 
 		console.log json
 
-		@clearPlaylist ->
+		@clearPlaylist _.once ->
 			# Show title
 			$('#playlist-title').hide().text(json.title.$t).delay(300).fadeIn 'fast'
 
 	clearPlaylist: (callback) ->
-		called = false
 		$('#playlist-title, #playlist-videos').fadeOut 'fast', ->
 			$(@).empty()
-			unless called
-				callback()
-				called = true
+			callback()
 
 	showLoading: ->
 		$('#playlist-loading-cue:hidden').slideDown 'fast'
