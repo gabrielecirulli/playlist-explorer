@@ -6,7 +6,7 @@ class App
 
 		@loadingMessageTimeout = null # Also used to keep track of loading
 		@defaultLoadingMessage = "Loading..."
-		@loadingMessageAddendum = "(it takes a while)"
+		@loadingMessageAddition = "(it takes a while)"
 
 		@defaultError = "Sorry, an unknown error occurred."
 
@@ -40,20 +40,24 @@ class App
 		@clearPlaylist =>
 			# Show title
 			$('#playlist-title').text(json.title.$t)
+			
 			# Show tagline
-			$('#playlist-information').text("By ").append $('<strong>').text json.author[0].name.$t
+			authorUrl = "http://youtube.com/user/#{json.author[0].uri.$t.split('/').pop()}"
+			$('#playlist-information').html @makeByAuthor(authorUrl, json.author[0].name.$t, true)
 
 			# Fill videos
 			videoContainer = $('#playlist-videos')
-			$.each json.entry, (index, video) ->
+			$.each json.entry, (index, video) =>
 				videoDiv = $('<div>').addClass 'video'
 				videoThumb = $('<div>').addClass('thumbnail').append $('<img>').attr 'src', video.media$group.media$thumbnail[0].url
 
 				videoDetails = $('<div>').addClass 'details'
-				videoTitle = $('<div>').attr('class', 'title').text video.title.$t
+				videoTitle = $('<div>').attr('class', 'title').append @makeLink video.link[0].href, video.title.$t, true
 				
 				videoDetails.append videoTitle
 				videoDiv.append videoThumb, videoDetails
+				videoDiv.click => @showVideo video.media$group.yt$videoid.$t
+
 				videoContainer.append videoDiv
 
 			@showPlaylist()
@@ -68,6 +72,10 @@ class App
 	showPlaylist: ->
 		@playlistDisplayElements.delay(300).fadeIn 'slow'
 
+	# Showing videos
+	showVideo: (videoId) ->
+		console.log 'showvideo ' + videoId
+
 	# Loading / errors	
 	showLoading: ->
 		return false if @loadingMessageTimeout?
@@ -75,7 +83,7 @@ class App
 		@loadingMessageTimeout = setTimeout @extendLoading, 5000
 
 	extendLoading: =>
-		$('#playlist-loading-cue').text("#{@defaultLoadingMessage} #{@loadingMessageAddendum}")
+		$('#playlist-loading-cue').text("#{@defaultLoadingMessage} #{@loadingMessageAddition}")
 
 	clearLoading: ->
 		$('#playlist-loading-cue:visible').slideUp 'fast'
@@ -91,6 +99,15 @@ class App
 		errorMessage = $('<li>').hide().text(errorText)
 		$('#playlist-input-errors').append errorMessage
 		errorMessage.slideDown 'fast'
+
+	# Utility
+	makeLink: (url, text, blank=false) ->
+		attr = href: url
+		attr.target = '_blank' if blank
+		$('<a>').attr(attr).text(text)
+
+	makeByAuthor: (url, author, blank=false) ->
+		$('<span>').text('By ').append @makeLink url, author, blank
 
 
 $(document).ready ->
