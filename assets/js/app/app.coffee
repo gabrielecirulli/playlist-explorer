@@ -16,6 +16,7 @@ class App
 
 			@fetchPlaylist playlistId
 
+	# Playlists
 	fetchPlaylist: (id) ->
 		@showLoading()
 		$.getJSON "/playlist/#{id}", (json) =>
@@ -26,20 +27,25 @@ class App
 				@showError json.errorMessage
 
 	receivePlaylist: (json) ->
-		
 		@currentPlaylist = json
+		console.log @currentPlaylist
 
-		console.log json
-
-		@clearPlaylist _.once ->
+		@clearPlaylist _.once =>
 			# Show title
-			$('#playlist-title').hide().text(json.title.$t).delay(300).fadeIn 'fast'
+			$('#playlist-title').text(json.title.$t)
+			# Show tagline
+			$('#playlist-information').text("By ").append $('<strong>').text json.author[0].name.$t
+
+			@showPlaylist()
 
 	clearPlaylist: (callback) ->
-		$('#playlist-title, #playlist-videos').fadeOut 'fast', ->
-			$(@).empty()
+		$('#playlist-title, #playlist-videos, #playlist-information').fadeOut 'fast', ->
 			callback()
 
+	showPlaylist: ->
+		$('#playlist-title, #playlist-information').delay(300).fadeIn 'fast'
+
+	# Loading / errors	
 	showLoading: ->
 		$('#playlist-loading-cue:hidden').slideDown 'fast'
 
