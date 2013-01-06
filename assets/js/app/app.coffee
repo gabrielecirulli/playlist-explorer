@@ -2,6 +2,8 @@ class App
 	constructor: ->
 		@currentPlaylist = null
 
+		@playlistDisplayElements = $('#playlist-title, #playlist-information, #playlist-videos')
+
 		@defaultError = "Sorry, an unknown error occurred."
 
 		# Hijack AJAX error
@@ -28,22 +30,29 @@ class App
 
 	receivePlaylist: (json) ->
 		@currentPlaylist = json
-		console.log @currentPlaylist
 
-		@clearPlaylist _.once =>
+		@clearPlaylist =>
 			# Show title
 			$('#playlist-title').text(json.title.$t)
 			# Show tagline
 			$('#playlist-information').text("By ").append $('<strong>').text json.author[0].name.$t
 
+			# Fill videos
+			videoContainer = $('#playlist-videos')
+			_.each json.entry, (video) ->
+				videoContainer.append $('<div>').text video.title.$t
+
 			@showPlaylist()
 
 	clearPlaylist: (callback) ->
-		$('#playlist-title, #playlist-videos, #playlist-information').fadeOut 'fast', ->
+		@playlistDisplayElements.fadeOut 'fast', ->
+			$(@).empty()
+
+		@playlistDisplayElements.promise().done ->
 			callback()
 
 	showPlaylist: ->
-		$('#playlist-title, #playlist-information').delay(300).fadeIn 'fast'
+		@playlistDisplayElements.delay(300).fadeIn 'slow'
 
 	# Loading / errors	
 	showLoading: ->
