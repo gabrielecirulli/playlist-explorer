@@ -26,14 +26,22 @@ class App
 				@showError json.errorMessage
 
 	receivePlaylist: (json) ->
-		@clearPlaylist()
+		
 		@currentPlaylist = json
 
-		console.log 'gotta playlsit'
 		console.log json
 
-	clearPlaylist: ->
-		$('#playlist-results').empty()
+		@clearPlaylist ->
+			# Show title
+			$('#playlist-title').hide().text(json.title.$t).delay(300).fadeIn 'fast'
+
+	clearPlaylist: (callback) ->
+		called = false
+		$('#playlist-title, #playlist-videos').fadeOut 'fast', ->
+			$(@).empty()
+			unless called
+				callback()
+				called = true
 
 	showLoading: ->
 		$('#playlist-loading-cue:hidden').slideDown 'fast'
