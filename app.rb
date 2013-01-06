@@ -23,12 +23,17 @@ get '/' do
   erb :index
 end
 
+get '/:id' do
+  @playlist_id = params[:id]
+  erb :index
+end
+
 SINGLE_PLAYLIST_FORMAT = "https://gdata.youtube.com/feeds/api/playlists/%s?v=2&alt=json"
 
 get '/playlist/:id' do
   playlist_id = URI.encode params[:id]
   unless request.xhr?
-    redirect "/##{playlist_id}"
+    redirect "/#{playlist_id}"
   end
 
   content_type :json

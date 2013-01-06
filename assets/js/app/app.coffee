@@ -55,7 +55,5 @@ class App
 $(document).ready ->
 	PlaylistApp = new App
 
-	if window.location.hash
-		$('#playlist-id').val decodeURIComponent window.location.hash.replace '#', '' 
-		window.location.hash = ''
+	if $('#playlist-id').val().trim()
 		$('#playlist-selector').submit()
