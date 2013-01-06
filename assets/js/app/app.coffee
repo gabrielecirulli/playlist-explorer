@@ -23,6 +23,6 @@ $(document).ready ->
 				if json.errorMessage then showError json.errorMessage else showError()
 
 	if window.location.hash
-		$('#playlist-id').val window.location.hash.replace '#', '' 
+		$('#playlist-id').val decodeURIComponent window.location.hash.replace '#', '' 
 		window.location.hash = ''
 		$('#playlist-selector').submit()
