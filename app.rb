@@ -26,17 +26,15 @@ end
 SINGLE_PLAYLIST_URL = "https://gdata.youtube.com/feeds/api/playlists/%s?v=2&alt=json"
 
 get '/playlist/:id' do
-  playlist_id = URI::encode params[:id]
-  unless env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
+  playlist_id = URI.encode params[:id]
+  unless request.xhr?
     redirect "/##{playlist_id}"
   end
-  
+
   content_type :json
   begin
     open( SINGLE_PLAYLIST_URL % playlist_id ).read
   rescue OpenURI::HTTPError
     { status: 'error', errorMessage: "Couldn't find a Playlist with ID '#{params[:id]}'!" }.to_json
-  rescue
-    halt 404 # Just in case
   end
 end
