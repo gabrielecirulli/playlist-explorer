@@ -35,6 +35,8 @@ class App
 	receivePlaylist: (json) ->
 		@currentPlaylist = json
 
+		console.log @currentPlaylist
+
 		@clearPlaylist =>
 			# Show title
 			$('#playlist-title').text(json.title.$t)
@@ -44,7 +46,15 @@ class App
 			# Fill videos
 			videoContainer = $('#playlist-videos')
 			$.each json.entry, (index, video) ->
-				videoContainer.append $('<div>').text video.title.$t
+				videoDiv = $('<div>').addClass 'video'
+				videoThumb = $('<div>').addClass('thumbnail').append $('<img>').attr 'src', video.media$group.media$thumbnail[0].url
+
+				videoDetails = $('<div>').addClass 'details'
+				videoTitle = $('<div>').attr('class', 'title').text video.title.$t
+				
+				videoDetails.append videoTitle
+				videoDiv.append videoThumb, videoDetails
+				videoContainer.append videoDiv
 
 			@showPlaylist()
 
