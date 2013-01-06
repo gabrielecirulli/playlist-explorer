@@ -4,6 +4,10 @@ class App
 
 		@playlistDisplayElements = $('#playlist-title, #playlist-information, #playlist-videos')
 
+		@loadingMessageTimeout = null # Also used to keep track of loading
+		@defaultLoadingMessage = "Loading..."
+		@loadingMessageAddendum = "(it takes a while)"
+
 		@defaultError = "Sorry, an unknown error occurred."
 
 		# Hijack AJAX error
@@ -20,7 +24,7 @@ class App
 
 	# Playlists
 	fetchPlaylist: (id) ->
-		@showLoading()
+		return unless @showLoading()
 		$.getJSON "/playlist/#{id}", (json) =>
 			@clearLoading()
 			if json.feed
@@ -56,10 +60,17 @@ class App
 
 	# Loading / errors	
 	showLoading: ->
-		$('#playlist-loading-cue:hidden').slideDown 'fast'
+		return false if @loadingMessageTimeout?
+		$('#playlist-loading-cue:hidden').text(@defaultLoadingMessage).slideDown 'fast'
+		@loadingMessageTimeout = setTimeout @extendLoading, 5000
+
+	extendLoading: =>
+		$('#playlist-loading-cue').text("#{@defaultLoadingMessage} #{@loadingMessageAddendum}")
 
 	clearLoading: ->
 		$('#playlist-loading-cue:visible').slideUp 'fast'
+		clearTimeout @loadingMessageTimeout
+		@loadingMessageTimeout = null
 
 	hideErrors: ->
 		$('#playlist-input-errors').empty()
