@@ -2,6 +2,8 @@ require 'sinatra'
 require 'open-uri'
 require 'JSON'
 require 'sinatra/assetpack'
+require 'pathname'
+require 'fileutils'
 
 set :sass, load_paths: [ "assets/css/" ]
 
@@ -37,6 +39,12 @@ get '/playlist/:id' do
   end
 
   content_type :json
+  if settings.development?
+    snapshot_path = Pathname.new "development/api-snapshots/#{playlist_id}"
+    FileUtils.mkdir_p snapshot_path.dirname unless Dir.exists? snapshot_path.dirname
+    halt open(snapshot_path).read if File.exists? snapshot_path
+  end
+
   begin
     per_page = 50 # Upper result count API limit
     json_result = Hash.new
@@ -55,7 +63,12 @@ get '/playlist/:id' do
       end
     end
     
-    json_result.to_json # Put out the result
+    string_json = json_result.to_json
+
+    # Save a snapshot if in development
+    File.write snapshot_path, string_json if settings.development?
+
+    string_json # Put out the result
     
   rescue OpenURI::HTTPError
     { status: 'error', errorMessage: "Couldn't find a Playlist with ID '#{params[:id]}'!" }.to_json
