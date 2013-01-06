@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'open-uri'
 require 'JSON'
-require 'pry'
 require 'sinatra/assetpack'
 
 set :sass, load_paths: [ "assets/css/" ]
