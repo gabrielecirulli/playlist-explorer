@@ -39,7 +39,7 @@ class App
 
 			# Fill videos
 			videoContainer = $('#playlist-videos')
-			_.each json.entry, (video) ->
+			$.each json.entry, (index, video) ->
 				videoContainer.append $('<div>').text video.title.$t
 
 			@showPlaylist()
