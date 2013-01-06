@@ -56,7 +56,7 @@ class App
 				
 				videoDetails.append videoTitle
 				videoDiv.append videoThumb, videoDetails
-				videoDiv.click => @showVideo video.media$group.yt$videoid.$t
+				videoDiv.click (e) => @showVideo video.media$group.yt$videoid.$t, e
 
 				videoContainer.append videoDiv
 
@@ -73,7 +73,8 @@ class App
 		@playlistDisplayElements.delay(300).fadeIn 'slow'
 
 	# Showing videos
-	showVideo: (videoId) ->
+	showVideo: (videoId, e) ->
+		e.preventDefault()
 		console.log 'showvideo ' + videoId
 
 	# Loading / errors	

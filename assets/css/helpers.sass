@@ -8,4 +8,18 @@
 		visibility: hidden
 
 @mixin border-box
+	-webkit-box-sizing: border-box
+	-mox-box-sizing: border-box
 	box-sizing: border-box
+
+@mixin display-box
+	display: -webkit-box
+	display: -moz-box
+	display: -o-box
+	display: box
+
+@mixin box-flex($flex)
+	-webkit-box-flex: $flex
+	-moz-box-flex: $flex
+	-o-box-flex: $flex
+	box-flex: $flex
