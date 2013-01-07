@@ -44,7 +44,7 @@ class App
 			
 			# Show tagline
 			authorUrl = "http://youtube.com/user/#{json.author[0].uri.$t.split('/').pop()}"
-			$('#playlist-information').addClass('author').html @makeByAuthor(authorUrl, json.author[0].name.$t, true)
+			$('#playlist-information').html @makeByAuthor(authorUrl, json.author[0].name.$t, true).append(" · #{json.entry.length} videos").html() # Clean this up
 
 			# Fill videos
 			videoContainer = $('#playlist-videos')
@@ -57,11 +57,11 @@ class App
 
 				videoDetails = $('<div>').addClass 'details'
 				videoTitle = $('<div>').addClass('title').append @makeLink video.link[0].href, video.title.$t, true
-				videoBy = $('<div>').addClass('author').html @makeByAuthor video.link[0].href, video.media$group.media$credit[0].yt$display, true
+				videoBy = $('<div>').addClass('author').html @makeByAuthor(video.link[0].href, video.media$group.media$credit[0].yt$display, true).html()
 				
 				videoDetails.append videoTitle, videoBy
 				videoDiv.append videoThumb, videoDetails
-				videoDiv.click (e) => @selectVideo video.media$group.yt$videoid.$t, videoDiv, e
+				videoDiv.click (e) => @selectVideo video, videoDiv, e
 
 				videoContainer.append videoDiv
 
@@ -78,27 +78,27 @@ class App
 		@playlistDisplayElements.delay(300).fadeIn 'slow'
 
 	# Showing videos
-	selectVideo: (videoId, videoDiv, e) ->
+	selectVideo: (video, videoDiv, e) ->
 		if $(e.target).parents('.author').size()
 			return true
 		e.preventDefault()
 		$('.video.active').removeClass 'active'
 		@clearVideo()
-		if @currentVideo is videoId
+		if @currentVideo is video
 			@currentVideo = null
 			return
 			
 		videoDiv.addClass 'active'
-		@showVideo(videoId)
+		@showVideo(video)
 
-		console.log 'showvideo ' + videoId
+		console.log 'showvideo ' + video
 
 	clearVideo: ->
 		console.log 'clear video'
 
-	showVideo: (videoId) ->
-		@currentVideo = videoId		
-		console.log 'show video ' + videoId
+	showVideo: (video) ->
+		@currentVideo = video		
+		console.log 'show video ' + video
 
 	# Loading / errors	
 	showLoading: ->
@@ -133,10 +133,3 @@ class App
 
 	makeByAuthor: (url, author, blank=false) ->
 		$('<span>').text('By ').append @makeLink url, author, blank
-
-
-$(document).ready ->
-	PlaylistApp = new App
-
-	if $('#playlist-id').val().trim()
-		$('#playlist-selector').submit()
