@@ -15,9 +15,11 @@ html, body
 	height: 100%
 
 #main-container
+	width: 1000px
+	margin: 0 auto
 	line-height: 20px
 	min-height: 100%
-	@include display-box
+	height: 100%
 	input
 		line-height: normal
 		&[type=text]
@@ -45,12 +47,14 @@ html, body
 		display: none
 		font-weight: bold
 		padding-top: 1em
+	
 	.playlist-section
-		width: 30%
-		min-width: 210px
+		@include border-box
+		float: left
+		width: 350px
+		min-height: 100%
 		background: #f5f5f5
 		padding: 20px
-		margin-left: 20px
 		border:
 			width: 0
 			color: #d9d9d9
@@ -66,14 +70,16 @@ html, body
 				font-weight: bold
 				color: #c34040
 		form
-			@include display-box
+			@include clear-fix
 			input
+				@include border-box
 				display: block
 				&#playlist-id
 					width: 75%
+					float: left
 				&#playlist-submit
-					margin-left: 10px
-					width: 25%
+					float: right
+					width: 20%
 		#playlist-results
 			margin-top: 20px
 			#playlist-title
@@ -84,11 +90,9 @@ html, body
 				@include clear-fix
 				cursor: pointer
 				margin-bottom: 20px
-				@include display-box
 				.thumbnail
 					width: 40%
-					max-width: 120px
-					min-width: 75px
+					float: left
 					img
 						@include border-box
 						border: 1px solid #333
@@ -97,11 +101,14 @@ html, body
 						position: relative
 					
 				.details
-					width: 60%
-					margin-left: 6%
+					width: 55%
+					float: right
 					.title
 						font-weight: bold
 
 	.related-section
-		width: 70%
+		@include border-box
+		width: 650px
+		float: left
 		padding: 20px
+		min-height: 100%
