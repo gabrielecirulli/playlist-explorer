@@ -93,7 +93,6 @@ class App
 		$('#playlist-loading-cue').text("#{@defaultLoadingMessage} #{@loadingMessageAddition}")
 
 	clearLoading: ->
-		return
 		$('#playlist-loading-cue:visible').slideUp 'fast'
 		clearTimeout @loadingMessageTimeout
 		@loadingMessageTimeout = null
