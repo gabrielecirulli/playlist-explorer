@@ -43,7 +43,7 @@ class App
 			
 			# Show tagline
 			authorUrl = "http://youtube.com/user/#{json.author[0].uri.$t.split('/').pop()}"
-			$('#playlist-information').html @makeByAuthor(authorUrl, json.author[0].name.$t, true)
+			$('#playlist-information').addClass('author').html @makeByAuthor(authorUrl, json.author[0].name.$t, true)
 
 			# Fill videos
 			videoContainer = $('#playlist-videos')
@@ -55,9 +55,11 @@ class App
 				videoThumb = $('<div>').addClass('thumbnail').append $('<img>').attr 'src', video.media$group.media$thumbnail[0].url
 
 				videoDetails = $('<div>').addClass 'details'
-				videoTitle = $('<div>').attr('class', 'title').append @makeLink video.link[0].href, video.title.$t, true
+				videoTitle = $('<div>').addClass('title').append @makeLink video.link[0].href, video.title.$t, true
+				authorUrl = "http://youtube.com/user/#{video.media$group.media$credit[0].$t}"
+				videoBy = $('<div>').addClass('author').html @makeByAuthor authorUrl, video.media$group.media$credit[0].yt$display, true
 				
-				videoDetails.append videoTitle
+				videoDetails.append videoTitle, videoBy
 				videoDiv.append videoThumb, videoDetails
 				videoDiv.click (e) => @showVideo video.media$group.yt$videoid.$t, e
 
@@ -77,11 +79,12 @@ class App
 
 	# Showing videos
 	showVideo: (videoId, e) ->
-		e.preventDefault()
+		#e.preventDefault()
 		console.log 'showvideo ' + videoId
 
 	# Loading / errors	
 	showLoading: ->
+		return true
 		return false if @loadingMessageTimeout?
 		@hideErrors()
 		$('#playlist-loading-cue:hidden').text(@defaultLoadingMessage).slideDown 'fast'
@@ -91,6 +94,7 @@ class App
 		$('#playlist-loading-cue').text("#{@defaultLoadingMessage} #{@loadingMessageAddition}")
 
 	clearLoading: ->
+		return
 		$('#playlist-loading-cue:visible').slideUp 'fast'
 		clearTimeout @loadingMessageTimeout
 		@loadingMessageTimeout = null
