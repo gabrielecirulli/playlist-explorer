@@ -48,6 +48,9 @@ class App
 			# Fill videos
 			videoContainer = $('#playlist-videos')
 			$.each json.entry, (index, video) =>
+				if video.app$control? and video.app$control.yt$state? and video.app$control.yt$state.name == 'deleted'
+					return false
+
 				videoDiv = $('<div>').addClass 'video'
 				videoThumb = $('<div>').addClass('thumbnail').append $('<img>').attr 'src', video.media$group.media$thumbnail[0].url
 
@@ -80,6 +83,7 @@ class App
 	# Loading / errors	
 	showLoading: ->
 		return false if @loadingMessageTimeout?
+		@hideErrors()
 		$('#playlist-loading-cue:hidden').text(@defaultLoadingMessage).slideDown 'fast'
 		@loadingMessageTimeout = setTimeout @extendLoading, 5000
 
