@@ -1,0 +1,2 @@
+class @PlaylistAppRenderer
+	constructor: ->

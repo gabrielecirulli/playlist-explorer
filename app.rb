@@ -14,7 +14,8 @@ assets do
   css :main, [ '/css/*.css' ]
   js :app,   [
     '/js/vendor/*.js',
-    '/js/app/*.js'
+    '/js/app/classes/*.js',
+    '/js/app/bootstrap/*.js'
   ]
 
 end

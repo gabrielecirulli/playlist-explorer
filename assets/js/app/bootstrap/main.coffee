@@ -1,5 +1,5 @@
 $(document).ready ->
-	PlaylistApp = new App
+	app = new PlaylistApp
 
 	if $('#playlist-id').val().trim()
 		$('#playlist-selector').submit()

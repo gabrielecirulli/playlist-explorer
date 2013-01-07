@@ -1,4 +1,4 @@
-class App
+class @PlaylistApp
 	constructor: ->
 		@currentPlaylist = null
 		@currentVideo = null
@@ -10,6 +10,8 @@ class App
 		@loadingMessageAddition = "(it takes a while)"
 
 		@defaultError = "Sorry, an unknown error occurred."
+
+		@renderer = new PlaylistAppRenderer
 
 		# Hijack AJAX error
 		$(document).ajaxError => 
