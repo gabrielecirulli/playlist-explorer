@@ -84,7 +84,6 @@ class App
 
 	# Loading / errors	
 	showLoading: ->
-		return true
 		return false if @loadingMessageTimeout?
 		@hideErrors()
 		$('#playlist-loading-cue:hidden').text(@defaultLoadingMessage).slideDown 'fast'
