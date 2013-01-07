@@ -1,6 +1,7 @@
 class App
 	constructor: ->
 		@currentPlaylist = null
+		@currentVideo = null
 
 		@playlistDisplayElements = $('#playlist-title, #playlist-information, #playlist-videos')
 
@@ -56,12 +57,11 @@ class App
 
 				videoDetails = $('<div>').addClass 'details'
 				videoTitle = $('<div>').addClass('title').append @makeLink video.link[0].href, video.title.$t, true
-				authorUrl = "http://youtube.com/user/#{video.media$group.media$credit[0].$t}"
-				videoBy = $('<div>').addClass('author').html @makeByAuthor authorUrl, video.media$group.media$credit[0].yt$display, true
+				videoBy = $('<div>').addClass('author').html @makeByAuthor video.link[0].href, video.media$group.media$credit[0].yt$display, true
 				
 				videoDetails.append videoTitle, videoBy
 				videoDiv.append videoThumb, videoDetails
-				videoDiv.click (e) => @showVideo video.media$group.yt$videoid.$t, e
+				videoDiv.click (e) => @selectVideo video.media$group.yt$videoid.$t, videoDiv, e
 
 				videoContainer.append videoDiv
 
@@ -78,9 +78,27 @@ class App
 		@playlistDisplayElements.delay(300).fadeIn 'slow'
 
 	# Showing videos
-	showVideo: (videoId, e) ->
-		#e.preventDefault()
+	selectVideo: (videoId, videoDiv, e) ->
+		if $(e.target).parents('.author').size()
+			return true
+		e.preventDefault()
+		$('.video.active').removeClass 'active'
+		@clearVideo()
+		if @currentVideo is videoId
+			@currentVideo = null
+			return
+			
+		videoDiv.addClass 'active'
+		@showVideo(videoId)
+
 		console.log 'showvideo ' + videoId
+
+	clearVideo: ->
+		console.log 'clear video'
+
+	showVideo: (videoId) ->
+		@currentVideo = videoId		
+		console.log 'show video ' + videoId
 
 	# Loading / errors	
 	showLoading: ->
